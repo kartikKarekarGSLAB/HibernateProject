@@ -15,6 +15,9 @@
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
         <!-- Show all sql to stdout -->
         <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.format_sql">true</property>
 		<mapping class="com.gslab.demo.model.Student" />
+		<mapping class="com.gslab.demo.model.Employee" />
     </session-factory>
 </hibernate-configuration>
