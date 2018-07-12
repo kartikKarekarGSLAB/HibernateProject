@@ -19,16 +19,23 @@ public class HibernetDAOImpl {
 			String result = (String) session.createNativeQuery(SQL).getSingleResult();
 			System.out.println("SQL VERSION : "+result);
 
-			Transaction tr = session.beginTransaction();
+			//create Employee
+/*			Transaction tr = session.beginTransaction();
 			Employee empObject = new Employee("kartik karekar","software engineer",3500.65f);
 			session.save(empObject);
+			session.getTransaction().commit();*/
+			Transaction tr = session.beginTransaction();
+			Employee e = session.get(Employee.class, 1);
+			
+			System.out.println(session.get("employee", 1));
+			//System.out.println("Name : "+e.getName());
+			session.getTransaction().commit();
 //			Student studentObject = new Student();
 //			studentObject.setId(105);
 //			studentObject.setName("Bhushan Chikhalikar");
 //			studentObject.setAge(24);			
 //			
 //			session.save(studentObject);
-			session.getTransaction().commit();
 			session.close();
 			HibernetUtil.closeSessionFactory();
 		} catch (HibernateException e) {
