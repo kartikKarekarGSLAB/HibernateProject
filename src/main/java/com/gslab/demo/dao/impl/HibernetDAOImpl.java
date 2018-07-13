@@ -15,27 +15,23 @@ public class HibernetDAOImpl {
 	public static void main(String[] args) {
 		try {
 			Session session = HibernetUtil.getSessionFactory().openSession();
-			String SQL = "SELECT VERSION();";
-			String result = (String) session.createNativeQuery(SQL).getSingleResult();
-			System.out.println("SQL VERSION : "+result);
 
 			//create Employee
-/*			Transaction tr = session.beginTransaction();
-			Employee empObject = new Employee("kartik karekar","software engineer",3500.65f);
-			session.save(empObject);
-			session.getTransaction().commit();*/
-			Transaction tr = session.beginTransaction();
-			Employee e = session.get(Employee.class, 1);
+//			Transaction tr = session.beginTransaction();
+//			Employee empObject = new Employee("Mandar dharurkar","Sr. software manager",85000.65f);
+//			session.save(empObject);
+//			session.getTransaction().commit();
 			
-			System.out.println(session.get("employee", 1));
-			//System.out.println("Name : "+e.getName());
-			session.getTransaction().commit();
-//			Student studentObject = new Student();
-//			studentObject.setId(105);
-//			studentObject.setName("Bhushan Chikhalikar");
-//			studentObject.setAge(24);			
-//			
-//			session.save(studentObject);
+			//read Employee
+			Employee s = readEmployee(session,1);
+			System.out.println(s);
+
+			//update Employee
+			//updateEmployee(session,new Employee());
+			
+			//delete Employee
+			//deleteEmployee(session,1);
+
 			session.close();
 			HibernetUtil.closeSessionFactory();
 		} catch (HibernateException e) {
@@ -43,6 +39,54 @@ public class HibernetDAOImpl {
 			e.printStackTrace();
 		}
 
+	}
+
+	private static Employee readEmployee(Session session,int foundId) {
+		// TODO Auto-generated method stub
+		Employee foundEmployee = session.get(Employee.class, foundId);
+		if (foundEmployee != null) {
+				return foundEmployee;
+		} else {
+			return null;
+		}
+	}
+
+	private static boolean updateEmployee(Session session,Employee updateDataEmployee) {
+		// TODO Auto-generated method stub
+		Employee foundEmployee = session.get(Employee.class, 1);
+		if (foundEmployee != null) {
+			if (updateDataEmployee != null) {
+				if (updateDataEmployee.getName() != null) {
+					foundEmployee.setName(updateDataEmployee.getName());					
+				}
+				if (updateDataEmployee.getDesignation() != null) {
+					foundEmployee.setDesignation(updateDataEmployee.getDesignation());
+				}
+				if (updateDataEmployee.getSalary() != 0.0f) {
+					foundEmployee.setSalary(updateDataEmployee.getSalary());
+				}
+				session.beginTransaction();
+				session.update(foundEmployee);
+				session.getTransaction().commit();
+				return true;
+			}
+		} else {
+			return false;
+		}
+		return false;
+	}
+
+	private static void deleteEmployee(Session session,int deleteEmpId) {
+		// TODO Auto-generated method stub
+		Employee foundEmployee = session.get(Employee.class, deleteEmpId);
+		if (foundEmployee != null) {
+			session.beginTransaction();
+			session.delete(foundEmployee);
+			session.getTransaction().commit();
+			System.out.println("Employee Deleted successfully");
+		} else {
+			System.out.println("Employee doesn't exists");
+		}		
 	}
 
 }
